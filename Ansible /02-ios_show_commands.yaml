@@ -1,0 +1,23 @@
+---
+- name: Sample IOS playbook to run show commands
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+  - name: run show ip int brief
+    cisco.ios.ios_command:
+      commands: show ip interface brief
+    register: myinterfaces
+
+  - name: display value of "myinterfaces" variable
+    debug:
+      var: myinterfaces["stdout_lines"][0]
+
+  - name: run show users
+    cisco.ios.ios_command:
+      commands: show users
+    register: myusers
+
+  - name: display value of "myusers" variable
+    debug:
+      var: myusers["stdout_lines"][0]
