@@ -1,0 +1,24 @@
+---
+- name: NETCONF lab cleanup
+  hosts: iosxe
+  gather_facts: no
+
+  tasks: 
+  - name: delete ntp servers 10.1.{{subnet_id}}.1 via CLI
+    vars:
+      ansible_connection: ansible.netcommon.network_cli
+    cisco.ios.ios_config:
+      lines:
+        - no ntp server 10.1.{{subnet_id}}.1
+    ignore_errors: True
+    failed_when: false
+  
+  - name: delete loopback {{subnet_id}}
+    vars:
+      ansible_connection: ansible.netcommon.network_cli  
+    cisco.ios.ios_interfaces:
+      name: Loopback{{subnet_id}}
+      enabled: True
+      state: absent
+    ignore_errors: True
+    failed_when: false

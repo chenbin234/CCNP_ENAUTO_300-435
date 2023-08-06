@@ -1,0 +1,73 @@
+---
+- name: Introduction to IOS XE Configuration Management with Ansible - Mission
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+  - name: run show vrf
+    cisco.ios.ios_command:
+      commands: show vrf
+    register: myvrf1
+
+  - name: display value of "myvrf1" variable
+    debug:
+      var: myvrf1["stdout_lines"][0]
+
+
+######### MISSION TODO #########
+# Uncomment and update this task to create 4 new Loopbacks numbered {{subnet_id}}.{{item}} such that if your subnet ID is 40 and the loop number
+# is 11, it would be loopback4011. Variable "subnet_id" is already defined in group_vars/iosxe.yml
+#
+  - name: Create loopback interfaces
+    cisco.ios.ios_interfaces:
+      config:
+      - name: Loopback{{subnet_id}}{{item}}
+        description: Ansible interface {{subnet_id}}{{item}}
+        enabled: true
+    loop:
+        - 11 
+        - 12
+        - 13
+        - 14
+    register: makeloop
+######### END MISSION SECTION #########
+
+  - name: Mission Checkpoint
+    fail:
+      msg: "Please review 04-mission.yaml and add a task to create the required Loopbacks with unique numbers"
+    when: makeloop is undefined
+
+
+######### MISSION TODO #########
+# Uncomment and update this task to create new VRFs using the "local_vrfs" variable already defined in group_vars/iosxe.yml
+  - name: Create VRFs as defined by local_vrfs
+    ios_vrf:
+      vrfs: "{{local_vrfs}}"
+      state: present
+    register: addvrf
+######### END MISSION SECTION #########
+
+  - name: Mission Checkpoint
+    fail:
+      msg: "Please review 04-mission.yaml and add a task to create the required VRFs"
+    when: addvrf is undefined
+
+  - name: run show vrf
+    ios_command:
+      commands: show vrf
+    register: myvrf2
+
+  - name: display value of "myvrf2" variable
+    debug:
+      var: myvrf2['stdout_lines'][0]
+
+######### MISSION TODO #########
+# Enter the Webex room ID and your personal token
+#  - name: Send info to Webex Teams room
+#    community.general.cisco_webex:
+#      recipient_type: roomId
+#      recipient_id: ""
+#      msg_type: text
+#      personal_token: ""
+#      msg: "Congrats! You finished the mission for Intro to Ansible! Current vrf table: \n{{myvrf2['stdout'][0]}}"
+######### END MISSION SECTION #########

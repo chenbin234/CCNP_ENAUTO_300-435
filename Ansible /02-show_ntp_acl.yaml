@@ -1,0 +1,23 @@
+---
+- name: ntp and acl show commands
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+  - name: run show ntp associations
+    cisco.ios.ios_command:
+      commands: show ntp associations
+    register: myntp
+
+  - name: display value of "myntp" variable
+    debug:
+      var: myntp["stdout_lines"][0]
+  
+  - name: run show ip access-lists
+    cisco.ios.ios_command:
+      commands: show ip access-lists
+    register: myacl
+
+  - name: display value of "myacl" variable
+    debug:
+      var: myacl["stdout_lines"][0]

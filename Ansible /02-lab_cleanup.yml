@@ -1,0 +1,32 @@
+---
+- name: lab cleanup
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+    - name: delete ACL via CLI
+      cisco.ios.ios_config:
+        lines:
+          - no ip access-list extended my_acl
+      ignore_errors: True
+      failed_when: false
+
+    - name: delete ntp servers 10.1.{{subnet_id}}.{{item}} via CLI
+      cisco.ios.ios_config:
+        lines:
+          - no ntp server 10.1.{{subnet_id}}.{{item}}
+      loop:
+        - 11
+        - 12
+        - 13
+        - 14
+      ignore_errors: True
+      failed_when: false
+
+    - name: delete loopback {{subnet_id}}
+      cisco.ios.ios_interfaces:
+        name: Loopback{{subnet_id}}
+        enabled: True
+        state: absent
+      ignore_errors: True
+      failed_when: false
