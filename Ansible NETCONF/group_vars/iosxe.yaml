@@ -1,0 +1,23 @@
+subnet_id: 9
+
+local_vrfs:
+  - name: red
+    description: "Red VRF"
+    rd: "1:400"
+    interfaces:
+      - Loopback{{subnet_id}}11
+  - name: blue
+    description: "Blue VRF"
+    rd: "1:410"
+    interfaces:
+      - Loopback{{subnet_id}}12
+  - name: green
+    description: "Green VRF"
+    rd: "1:420"
+    interfaces:
+      - Loopback{{subnet_id}}13
+  - name: yellow
+    description: "Yellow VRF"
+    rd: "1:{{subnet_id}}"
+    interfaces:
+      - Loopback{{subnet_id}}14

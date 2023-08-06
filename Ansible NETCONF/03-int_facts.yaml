@@ -1,0 +1,16 @@
+---
+- name: Playbook to retrieve interface facts
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+  - name: retrieve ios facts
+    vars:
+      ansible_connection: ansible.netcommon.network_cli
+    cisco.ios.ios_facts:
+        gather_subset: interfaces
+
+
+  - name: print out interface information
+    debug:
+      var: ansible_net_interfaces

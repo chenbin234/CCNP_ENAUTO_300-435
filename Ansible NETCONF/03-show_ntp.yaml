@@ -1,0 +1,16 @@
+---
+- name: show ntp servers
+  hosts: iosxe
+  gather_facts: no
+
+  tasks:
+  - name: run show ntp associations
+    vars:
+      ansible_connection: ansible.netcommon.network_cli
+    cisco.ios.ios_command:
+      commands: show ntp associations
+    register: myntp
+
+  - name: display value of "myntp" variable
+    debug:
+      var: myntp["stdout_lines"][0]
