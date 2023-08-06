@@ -1,0 +1,11 @@
+[iosxe:vars]
+ansible_connection=ansible.netcommon.network_cli
+ansible_user=developer
+ansible_password=C1sco12345
+ansible_become=yes
+ansible_become_method=enable
+ansible_network_os=cisco.ios.ios
+subnet_id=10
+
+[iosxe]
+10.10.20.48  # dcloud pod router #1
